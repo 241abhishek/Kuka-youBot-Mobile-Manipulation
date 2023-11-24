@@ -28,7 +28,7 @@ def NextState(curr_config, vel, timestep, max_vel):
     # define chassis planar twist in 6D
     Vb_6D = np.array([0, 0, Vb[0], Vb[1], Vb[2], 0])
 
-    # T matrix realting new body frame pose to intitial
+    # T matrix realting new body frame pose to initial
     T_b_bnew = mr.MatrixExp6(mr.VecTose3(Vb_6D))
 
     # define change in coordinates relative to the body frame - d_qb

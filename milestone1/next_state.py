@@ -24,6 +24,9 @@ def NextState(curr_config, vel, timestep, max_vel):
 
     # define chassis planar twist
     Vb = F@wheel_angle_increment
+    # Vb = F@(vel[:4]*timestep)
+    # Vb = np.dot(F,(vel[:4]*timestep)).reshape(3,)
+
 
     # define chassis planar twist in 6D
     Vb_6D = np.array([0, 0, Vb[0], Vb[1], Vb[2], 0])
@@ -48,6 +51,7 @@ def NextState(curr_config, vel, timestep, max_vel):
     chassis_angle = curr_config[0]
     rot_mat = np.array([[1, 0, 0], [0, np.cos(chassis_angle), -np.sin(chassis_angle)],[0, np.sin(chassis_angle), np.cos(chassis_angle)]])
     d_qs = rot_mat@d_qb
+    # d_qs = np.dot(rot_mat,d_qb)
 
     # define updated chassis config
     chassis_curr_config = np.array(curr_config[:3])
@@ -70,10 +74,10 @@ def main(args=None):
     Main function.
     """
     # define inputs
-    curr_config = np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
-    vel = np.array([-10.0, 10.0, -10.0, 10.0, 1.0, 1.0, 1.0, 1.0, 1.0])
+    curr_config = np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
+    vel = np.array([10.0, 10.0, 10.0, 10.0, 1.0, 1.0, 1.0, 1.0, 1.0])
     timestep = 0.01
-    max_vel = 5
+    max_vel = 10000
     total_sim_time = 1
 
     waypoints = []

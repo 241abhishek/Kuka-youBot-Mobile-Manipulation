@@ -34,7 +34,7 @@ def main(args=None):
 
     Traj, Traj_SE3 = TrajectoryGenerator(Tse_i, Tsc_i, Tsc_f, Tce_g, Tce_s,k)
 
-    curr_config = np.array([0.0, 0.0, 0.0, 0.0, 1.5, -1.5, -1.5, 0.0, 0.0, 0.0, 0.0, 0.0])
+    curr_config = np.array([0.558505, -0.5, 0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
     T_b0 = np.array([[1,0,0,0.1662],
                     [0,1,0,0],
                     [0,0,1,0.0026],
@@ -53,7 +53,7 @@ def main(args=None):
     Kp = 2
     Ki = 0
     timestep = 0.01
-    max_vel = 10000000000000000000000000000000
+    max_vel = 8
     config_1 = np.append(curr_config, 0)
     config_list = [config_1]
     integral_error = np.array([0.0,0.0,0.0,0.0,0.0,0.0])
@@ -78,12 +78,10 @@ def main(args=None):
         curr_config = NextState(curr_config, vel, timestep, max_vel)
         config = np.append(curr_config, Traj[i][-1])
         config_list.append(config)
-    
-    # print(config_list)
-    # print(config_list)
+
     # Overwrite csv file
     # uncomment this to overwrite/create a csv file
-    np.savetxt("animation_test.csv", np.asarray(np.c_[config_list]), delimiter = ",")
+    np.savetxt("animation.csv", np.asarray(np.c_[config_list]), delimiter = ",")
 
     X_error_list = np.asarray(X_error_list)
     plt.plot(X_error_list[:,0])

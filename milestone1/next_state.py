@@ -6,16 +6,19 @@ def NextState(curr_config, vel, timestep, max_vel):
 
     # define matrix F to compute chassis planar twist Vb
     r = 0.0475
-    l = 0.47/2
-    w = 0.3/2
+    l = 0.235
+    w = 0.15
     F = (r/4)*np.array([[-1/(l+w), 1/(l+w), 1/(l+w), -1/(l+w)], [1, 1, 1, 1], [-1, 1, -1, 1]])
 
     # placing limits on joint veolcities
     for i in range(len(vel)):
         if vel[i] > max_vel:
             vel[i] = max_vel
+            # print("limiting")
         if vel[i] < -max_vel:
             vel[i] = -max_vel
+            # print("limiting")
+
  
     # update the joint angles
     updated_arm_angles = curr_config[3:8] + vel[4:]*timestep
@@ -26,7 +29,6 @@ def NextState(curr_config, vel, timestep, max_vel):
     Vb = F@wheel_angle_increment
     # Vb = F@(vel[:4]*timestep)
     # Vb = np.dot(F,(vel[:4]*timestep)).reshape(3,)
-
 
     # define chassis planar twist in 6D
     Vb_6D = np.array([0, 0, Vb[0], Vb[1], Vb[2], 0])
@@ -39,7 +41,7 @@ def NextState(curr_config, vel, timestep, max_vel):
     v_bx = Vb[1]
     v_by = Vb[2]
     d_theata_b = w_bz
-    if w_bz == 0:
+    if w_bz < 1e-3:
         d_x_b = v_bx
         d_y_b = v_by
     else:
@@ -51,11 +53,11 @@ def NextState(curr_config, vel, timestep, max_vel):
     chassis_angle = curr_config[0]
     rot_mat = np.array([[1, 0, 0], [0, np.cos(chassis_angle), -np.sin(chassis_angle)],[0, np.sin(chassis_angle), np.cos(chassis_angle)]])
     d_qs = rot_mat@d_qb
-    # d_qs = np.dot(rot_mat,d_qb)
 
     # define updated chassis config
     chassis_curr_config = np.array(curr_config[:3])
     chassis_updated_config = chassis_curr_config + d_qs
+
 
     # form in updated_config list in the right order
     updated_config = []
@@ -75,12 +77,12 @@ def main(args=None):
     """
     # define inputs
     curr_config = np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
-    vel = np.array([10.0, 10.0, 10.0, 10.0, 1.0, 1.0, 1.0, 1.0, 1.0])
+    vel = np.array([-15.0, 5.0, 10.0, -1.0, 0.0, 0.0, 0.0, 0.0, 0.0])
     timestep = 0.01
-    max_vel = 10000
+    max_vel = 10
     total_sim_time = 1
 
-    waypoints = []
+    waypoints = [np.concatenate((curr_config,0), axis=None)]
     gripper_state = 1
     for i in range(int(total_sim_time/timestep)):
         curr_config = NextState(curr_config, vel, timestep, max_vel)

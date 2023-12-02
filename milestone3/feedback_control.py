@@ -5,7 +5,10 @@ def FeedbackControl(X, X_d, X_d_next, Kp, Ki, timestep, curr_config, integral_er
 
     X_err = mr.se3ToVec(mr.MatrixLog6((mr.TransInv(X))@X_d))
     
-    # integral_error = integral_error + X_err*timestep
+    # integral_error = np.add(integral_error,X_err*timestep)
+    # print(integral_error)
+
+    int_err = X_err*timestep
 
     V_d = mr.se3ToVec((1/timestep)*mr.MatrixLog6((mr.TransInv(X_d))@X_d_next))
     
@@ -43,8 +46,9 @@ def FeedbackControl(X, X_d, X_d_next, Kp, Ki, timestep, curr_config, integral_er
     Je = np.zeros(shape=(6,9))
     Je[:,:4] = J_base
     Je[:,4:] = Jb
+    # print(V)
     vel = np.linalg.pinv(Je)@V
-    return vel, integral_error, X_err
+    return vel, int_err, X_err
 
 def main(args=None):
     """

@@ -34,7 +34,7 @@ def main(args=None):
 
     Traj, Traj_SE3 = TrajectoryGenerator(Tse_i, Tsc_i, Tsc_f, Tce_g, Tce_s,k)
 
-    curr_config = np.array([0.558505, -0.5, 0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
+    curr_config = np.array([0.558505, -1.2, 1.3, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
     T_b0 = np.array([[1,0,0,0.1662],
                     [0,1,0,0],
                     [0,0,1,0.0026],
@@ -51,14 +51,15 @@ def main(args=None):
                         [0,0,0,0,0]])
     
     Kp = 2
-    Ki = 0
+    Ki = 0.01
     timestep = 0.01
-    max_vel = 8
+    max_vel = 50
     config_1 = np.append(curr_config, 0)
     config_list = [config_1]
     integral_error = np.array([0.0,0.0,0.0,0.0,0.0,0.0])
     X_error_list = []
 
+    count = 0
     for i in range(len(Traj)-1):
         phi = curr_config[0]
         x = curr_config[1]
@@ -73,8 +74,10 @@ def main(args=None):
         X = Tsb@T_b0@T_0e
 
         vel, int_err, X_error = FeedbackControl(X, Traj_SE3[i], Traj_SE3[i+1], Kp, Ki, timestep, curr_config, integral_error)
+        # print(integral_error)
         X_error_list.append(X_error)
         integral_error = np.add(integral_error,int_err)
+        # print(integral_error)
         curr_config = NextState(curr_config, vel, timestep, max_vel)
         config = np.append(curr_config, Traj[i][-1])
         config_list.append(config)

@@ -82,42 +82,42 @@ def TrajectoryGenerator(Tse_i, Tsc_i, Tsc_f, Tce_g, Tce_s,k):
     waypoint7 = Tsc_f@Tce_g
     waypoint8 = Tsc_f@Tce_s
 
-    traj_1 = mr.ScrewTrajectory(Tse_i,waypoint1,2,2*k/0.01,5)
+    traj_1 = mr.ScrewTrajectory(Tse_i,waypoint1,4,4*k/0.01,5)
     Tse_mat = TrajectoryParser(traj_1, Tse_mat, 0)
     for i in range(len(traj_1)):
         Tse_SE3_mat.append(traj_1[i])
 
-    traj_2 = mr.ScrewTrajectory(waypoint1,waypoint2,2,2*k/0.01,5)
+    traj_2 = mr.ScrewTrajectory(waypoint1,waypoint2,4,4*k/0.01,5)
     Tse_mat = TrajectoryParser(traj_2, Tse_mat, 0)
     for i in range(len(traj_2)):
         Tse_SE3_mat.append(traj_2[i])
 
-    traj_3 = mr.ScrewTrajectory(waypoint2,waypoint3,1,1*k/0.01,5)
+    traj_3 = mr.ScrewTrajectory(waypoint2,waypoint3,2,2*k/0.01,5)
     Tse_mat = TrajectoryParser(traj_3, Tse_mat, 1)
     for i in range(len(traj_3)):
         Tse_SE3_mat.append(traj_3[i])
 
-    traj_4 = mr.ScrewTrajectory(waypoint3,waypoint4,2,2*k/0.01,5)
+    traj_4 = mr.ScrewTrajectory(waypoint3,waypoint4,4,4*k/0.01,5)
     Tse_mat = TrajectoryParser(traj_4, Tse_mat, 1)
     for i in range(len(traj_4)):
         Tse_SE3_mat.append(traj_4[i])
 
-    traj_5 = mr.ScrewTrajectory(waypoint4,waypoint5,3,3*k/0.01,5)
+    traj_5 = mr.ScrewTrajectory(waypoint4,waypoint5,6,6*k/0.01,5)
     Tse_mat = TrajectoryParser(traj_5, Tse_mat, 1)
     for i in range(len(traj_5)):
         Tse_SE3_mat.append(traj_5[i])
 
-    traj_6 = mr.ScrewTrajectory(waypoint5,waypoint6,2,2*k/0.01,5)
+    traj_6 = mr.ScrewTrajectory(waypoint5,waypoint6,4,4*k/0.01,5)
     Tse_mat = TrajectoryParser(traj_6, Tse_mat, 1)
     for i in range(len(traj_6)):
         Tse_SE3_mat.append(traj_6[i])
 
-    traj_7 = mr.ScrewTrajectory(waypoint6,waypoint7,1,1*k/0.01,5)
+    traj_7 = mr.ScrewTrajectory(waypoint6,waypoint7,2,2*k/0.01,5)
     Tse_mat = TrajectoryParser(traj_7, Tse_mat, 0)
     for i in range(len(traj_7)):
         Tse_SE3_mat.append(traj_7[i])
 
-    traj_8 = mr.ScrewTrajectory(waypoint7,waypoint8,2,2*k/0.01,5)
+    traj_8 = mr.ScrewTrajectory(waypoint7,waypoint8,4,4*k/0.01,5)
     Tse_mat = TrajectoryParser(traj_8, Tse_mat, 0)
     for i in range(len(traj_8)):
         Tse_SE3_mat.append(traj_8[i])

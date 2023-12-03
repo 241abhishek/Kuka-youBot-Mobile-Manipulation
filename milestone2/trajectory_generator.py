@@ -41,7 +41,7 @@ Usage:
                         [0, 0,  0, 1]])
         k = 1
 
-        Traj_1 = TrajectoryGenerator(Tse_i, Tsc_i, Tsc_f, Tce_g, Tce_s,k)
+        Traj_1, Traj_SE3_1 = TrajectoryGenerator(Tse_i, Tsc_i, Tsc_f, Tce_g, Tce_s,k)
 """
 
 import numpy as np
@@ -156,8 +156,6 @@ def main(args=None):
     k = 1
 
     Traj_1, Traj_SE3_1 = TrajectoryGenerator(Tse_i, Tsc_i, Tsc_f, Tce_g, Tce_s,k)
-    # for i in range(len(Traj_SE3_1)):
-    #     print(Traj_SE3_1[i])
 
 if __name__ == "__main__":
     main()

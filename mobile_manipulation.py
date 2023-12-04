@@ -129,6 +129,10 @@ def main(args=None):
     plt.legend([r'$Xerr_1$',r'$Xerr_2$',r'$Xerr_3$',r'$Xerr_4$',r'$Xerr_5$',r'$Xerr_6$'])
     plt.show()
 
+    # Save data to CSV file
+    data_to_save = np.column_stack((t, X_error_list))
+    np.savetxt('error_data.csv', data_to_save, delimiter=',')
+
     logging.info("Done.")
 
 if __name__ == "__main__":
